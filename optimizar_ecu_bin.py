@@ -42,7 +42,7 @@ print(f"Archivo 'cavalier_2018_eco.bin' generado con exito. Checksum: {hex(check
 
 fig = plt.figure(figsize=(12, 5))
 ax1 = fig.add_subplot(121, projection='3d')
-ax1.plot_surface(X, Y, Z_suave, cmap='viridis', edgecolor='k', linewidth=0.3)
+ax1.plot_surface(X, Y, Z_stock, cmap='viridis', edgecolor='k', linewidth=0.3)
 ax1.set_title('Original (Stock .bin)')
 
 ax2 = fig.add_subplot(122, projection='3d')
