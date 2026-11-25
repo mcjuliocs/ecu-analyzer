@@ -1,0 +1,15 @@
+<XDFFORMAT version="1.60">
+ <XDFHEADER>
+   <deftitle>GM Delco E83 - Cavalier 1.5L</deftitle>
+   <description>Definicion de tablas principales de calibracion</description>
+ </XDFHEADER>
+ <XDFTABLE uniqueid="0x101">
+   <title>Inyeccion Principal (ms)</title>
+   <offset>0x0400</offset>
+   <rows>16</rows>
+   <cols>16</cols>
+   <datatype>uint16_le</datatype>
+   <factor>0.01</factor>
+   <units>ms</units>
+ </XDFTABLE>
+</XDFFORMAT>
