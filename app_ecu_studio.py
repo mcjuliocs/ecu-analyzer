@@ -37,6 +37,8 @@ if archivo_xdf is not None and archivo_bin is not None:
     factor = float(tabla.find('factor').text)
     unidades = tabla.find('units').text
 
+total_celdas = filas * cols
+
 if isinstance(archivo_bin, str):
     datos_binarios = bytearray([0xFF] * 4096)
     rpm_sim = np.linspace(800, 6500, cols)
@@ -47,9 +49,8 @@ if isinstance(archivo_bin, str):
     crudos = np.round(mapa_sim / factor).astype(np.uint16).flatten()
     datos_binarios[offset : offset + (total_celdas * 2)] = struct.pack(f'<{total_celdas}H', *crudos)
 else:
-        datos_binarios = bytearray(archivo_bin.read())
+    datos_binarios = bytearray(archivo_bin.read())
 
-    total_celdas = filas * cols
     bloque = datos_binarios[offset : offset + (total_celdas * 2)]
     valores = struct.unpack(f'<{total_celdas}H', bloque)
     Z_stock = np.array(valores, dtype=float).reshape((filas, cols)) * factor
