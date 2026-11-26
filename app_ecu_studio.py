@@ -48,7 +48,7 @@ if archivo_xdf is not None and archivo_bin is not None:
         crudos = np.round(mapa_sim / factor).astype(np.uint16).flatten()
         datos_binarios[offset : offset + (total_celdas * 2)] = struct.pack(f'<{total_celdas}H', *crudos)
     else:
-    datos_binarios = bytearray(archivo_bin.read())
+        datos_binarios = bytearray(archivo_bin.read())
 
     bloque = datos_binarios[offset : offset + (total_celdas * 2)]
     valores = struct.unpack(f'<{total_celdas}H', bloque)
