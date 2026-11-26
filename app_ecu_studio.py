@@ -17,7 +17,7 @@ if not usar_demo:
 else:
     archivo_xdf = "cavalier_e83.xdf"
     archivo_bin = "cavalier_2018_atock.bin"
-                                            
+
 st.sidebar.header("2. Parámetros de Calibración ECO")
 recorte_pct = st.sidebar.slider("Recorte de combustible en crucero (%)", 0, 20, 12)
 rpm_min, rpm_max = st.sidebar.slider("Rango de RPM crucero", 1000, 5000, (1500, 3200), step=100)
@@ -37,7 +37,12 @@ if archivo_xdf is not None and archivo_bin is not None:
     factor = float(tabla.find('factor').text)
     unidades = tabla.find('units').text
 
-    datos_binarios = bytearray(archivo_bin.read())
+    if isinstance(archivo_bin, str):
+        with open(archivo_bin, "rb") as f:
+            datos_binarios =bytearray(f.read())
+    else:
+        datos_binarios = bytearray(archivo_bin.read())
+        
     total_celdas = filas * cols
     bloque = datos_binarios[offset : offset + (total_celdas * 2)]
     valores = struct.unpack(f'<{total_celdas}H', bloque)
