@@ -38,11 +38,17 @@ if archivo_xdf is not None and archivo_bin is not None:
     unidades = tabla.find('units').text
 
     if isinstance(archivo_bin, str):
-        with open(archivo_bin, "rb") as f:
-            datos_binarios =bytearray(f.read())
+    datos_binarios = bytearray([0xFF] * 4096)
+    rpm_sim = np.linspace(800, 6500, cols)
+    carga_sim = np.linspace(0, 100, filas)
+    X_s, Y_s = np.meshgrid(rpm_sim, carga_sim)
+    mapa_sim = (Y_s / 100.0) * 14.0 + (X_s / 6500.0) * 4.5 + 1.8
+    mapa_sim[0, 3:] = 0.0
+    crudos = np.round(mapa_sim / factor).astype(np.uint16).flatten()
+    datos_binarios[offset : offset + (total_celdas * 2)] = struct.pack(f'<{total_celdas}H', *crudos)
     else:
         datos_binarios = bytearray(archivo_bin.read())
-        
+
     total_celdas = filas * cols
     bloque = datos_binarios[offset : offset + (total_celdas * 2)]
     valores = struct.unpack(f'<{total_celdas}H', bloque)
