@@ -8,10 +8,16 @@ st.set_page_config(page_title="ECU Studio 3D", layout="wide")
 st.title("🚗 ECU Studio 3D — Analizador y Calibrador Binario")
 st.markdown("Herramienta de visualización 3D, calibración en zona de crucero y verificación de checksum.")
 
-st.sidebar.header("1. Cargar Archivos")
-archivo_xdf = st.sidebar.file_uploader("Plantilla de definición (.xdf)", type=["xdf", "xml"])
-archivo_bin = st.sidebar.file_uploader("Memoria de la ECU (.bin)", type=["bin"])
+st.sidebar.header("1. Fuente de Datos")
+usar_demo = st.sidebar.checkbox("Usar datos de ejemplo (cavalier 1.5L)", value=True)
 
+if not usar_demo:
+    archivo_xdf = st.sidebar.file_uploader("Plantilla de definición (.xdf)", type=["xdf", "xml"])
+    archivo_bin = st.sidebar.file_uploader("Meemoria de la ECU (.bin)", tipe=["bin"])
+else:
+    archivo_xdf = "cavalier_e83.xdf"
+    archivo_bin = "cavalier_2018_atock.bin"
+                                            
 st.sidebar.header("2. Parámetros de Calibración ECO")
 recorte_pct = st.sidebar.slider("Recorte de combustible en crucero (%)", 0, 20, 12)
 rpm_min, rpm_max = st.sidebar.slider("Rango de RPM crucero", 1000, 5000, (1500, 3200), step=100)
