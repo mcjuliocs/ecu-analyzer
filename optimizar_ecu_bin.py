@@ -27,6 +27,7 @@ for _ in range(3):
             Z_suave[fila, col] = 0.5 * temp[fila, col] + 0.5 * vecinos
 
 Z_suave[0, :] = Z_stock[0, :]
+Z_suave[1, :] = Z_stock[1, :]
 
 datos_nuevos = np.round(Z_suave * 100).astype(np.uint16).flatten()
 bytes_nuevos = struct.pack('<256H', *datos_nuevos)
