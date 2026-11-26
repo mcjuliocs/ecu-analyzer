@@ -109,5 +109,4 @@ else:
         file_name="ecu_calibrada_eco.bin",
         mime="application/octet-stream"
     )
-else:
-    st.info("👈 Sube tu archivo *.xdf* y *.bin* en el menú de la izquierda para comenzar.")
+st.info("👈 Sube tu archivo *.xdf* y *.bin* en el menú de la izquierda para comenzar.")
