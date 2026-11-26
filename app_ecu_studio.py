@@ -13,7 +13,7 @@ usar_demo = st.sidebar.checkbox("Usar datos de ejemplo (cavalier 1.5L)", value=T
 
 if not usar_demo:
     archivo_xdf = st.sidebar.file_uploader("Plantilla de definición (.xdf)", type=["xdf", "xml"])
-    archivo_bin = st.sidebar.file_uploader("Meemoria de la ECU (.bin)", tipe=["bin"])
+    archivo_bin = st.sidebar.file_uploader("Meemoria de la ECU (.bin)", type=["bin"])
 else:
     archivo_xdf = "cavalier_e83.xdf"
     archivo_bin = "cavalier_2018_atock.bin"
@@ -37,18 +37,17 @@ if archivo_xdf is not None and archivo_bin is not None:
     factor = float(tabla.find('factor').text)
     unidades = tabla.find('units').text
 
-total_celdas = filas * cols
-
-if isinstance(archivo_bin, str):
-    datos_binarios = bytearray([0xFF] * 4096)
-    rpm_sim = np.linspace(800, 6500, cols)
-    carga_sim = np.linspace(0, 100, filas)
-    X_s, Y_s = np.meshgrid(rpm_sim, carga_sim)
-    mapa_sim = (Y_s / 100.0) * 14.0 + (X_s / 6500.0) * 4.5 + 1.8
-    mapa_sim[0, 3:] = 0.0
-    crudos = np.round(mapa_sim / factor).astype(np.uint16).flatten()
-    datos_binarios[offset : offset + (total_celdas * 2)] = struct.pack(f'<{total_celdas}H', *crudos)
-else:
+    total_celdas = filas * cols
+    if isinstance(archivo_bin, str):
+        datos_binarios = bytearray([0xFF] * 4096)
+        rpm_sim = np.linspace(800, 6500, cols)
+        carga_sim = np.linspace(0, 100, filas)
+        X_s, Y_s = np.meshgrid(rpm_sim, carga_sim)
+        mapa_sim = (Y_s / 100.0) * 14.0 + (X_s / 6500.0) * 4.5 + 1.8
+        mapa_sim[0, 3:] = 0.0
+        crudos = np.round(mapa_sim / factor).astype(np.uint16).flatten()
+        datos_binarios[offset : offset + (total_celdas * 2)] = struct.pack(f'<{total_celdas}H', *crudos)
+    else:
     datos_binarios = bytearray(archivo_bin.read())
 
     bloque = datos_binarios[offset : offset + (total_celdas * 2)]
@@ -109,4 +108,5 @@ else:
         file_name="ecu_calibrada_eco.bin",
         mime="application/octet-stream"
     )
-st.info("👈 Sube tu archivo *.xdf* y *.bin* en el menú de la izquierda para comenzar.")
+else:
+    st.info("👈 Sube tu archivo *.xdf* y *.bin* en el menú de la izquierda para comenzar.")
