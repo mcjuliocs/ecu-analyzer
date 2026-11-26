@@ -37,7 +37,7 @@ if archivo_xdf is not None and archivo_bin is not None:
     factor = float(tabla.find('factor').text)
     unidades = tabla.find('units').text
 
-    if isinstance(archivo_bin, str):
+if isinstance(archivo_bin, str):
     datos_binarios = bytearray([0xFF] * 4096)
     rpm_sim = np.linspace(800, 6500, cols)
     carga_sim = np.linspace(0, 100, filas)
@@ -46,7 +46,7 @@ if archivo_xdf is not None and archivo_bin is not None:
     mapa_sim[0, 3:] = 0.0
     crudos = np.round(mapa_sim / factor).astype(np.uint16).flatten()
     datos_binarios[offset : offset + (total_celdas * 2)] = struct.pack(f'<{total_celdas}H', *crudos)
-    else:
+else:
         datos_binarios = bytearray(archivo_bin.read())
 
     total_celdas = filas * cols
